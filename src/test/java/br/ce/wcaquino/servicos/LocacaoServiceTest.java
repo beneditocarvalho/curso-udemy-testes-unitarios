@@ -2,7 +2,9 @@ package br.ce.wcaquino.servicos;
 
 import static org.hamcrest.CoreMatchers.is;
 
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import org.hamcrest.CoreMatchers;
 import org.junit.After;
@@ -61,15 +63,14 @@ public class LocacaoServiceTest {
 	public void testeLocacao_filmeEmEstoque() throws Exception {
 
 		// cenario
-		teste = new LocacaoService();
 		Usuario usuario = new Usuario("Benedito");
-		Filme filme = new Filme("A volta dos que não foram", 1, 20.0);
+		List<Filme> filmes = Arrays.asList(new Filme("A volta dos que não foram", 1, 20.0));
 
 		System.out.println("Teste!");
 
 		// acao
 
-		Locacao locacao = teste.alugarFilme(usuario, filme);
+		Locacao locacao = teste.alugarFilme(usuario, filmes);
 
 		// verificacao
 		error.checkThat(locacao.getValor(), CoreMatchers.is(20.0));
@@ -82,25 +83,23 @@ public class LocacaoServiceTest {
 	@Test(expected = FilmeSemEstoqueException.class) // teste onde apenas essa exceção ocorre
 	public void testeLocacao_filmeSemEstoque() throws Exception {
 		// cenario
-		teste = new LocacaoService();
 		Usuario usuario = new Usuario("José");
-		Filme filme = new Filme("A volta dos que não foram", 0, 20.0);
+		List<Filme> filmes = Arrays.asList(new Filme("A volta dos que não foram", 0, 20.0));
 
 		// acao
 
-		Locacao locacao = teste.alugarFilme(usuario, filme);
+		Locacao locacao = teste.alugarFilme(usuario, filmes);
 	}
 
 	@Test // teste onde consegue verificar excecao e mensagem então código segue fluxo
 	public void testLocacao_usuarioVazio() throws FilmeSemEstoqueException {
 		// cenario
-		teste = new LocacaoService();
-		Filme filme = new Filme("A volta dos que não foram", 1, 20.0);
+		List<Filme> filmes = Arrays.asList(new Filme("A volta dos que não foram", 1, 20.0));
 
 		// acao
 
 		try {
-			Locacao locacao = teste.alugarFilme(null, filme);
+			Locacao locacao = teste.alugarFilme(null, filmes);
 			Assert.fail();
 		} catch (LocadoraException e) {
 			Assert.assertThat(e.getMessage(), is("Usuario Vazio"));
@@ -112,7 +111,6 @@ public class LocacaoServiceTest {
 			// processo
 	public void testLocacao_filmeVazio() throws FilmeSemEstoqueException, LocadoraException {
 		// cenario
-		teste = new LocacaoService();
 		Usuario usuario = new Usuario("José");
 
 		exception.expect(LocadoraException.class);
@@ -120,7 +118,6 @@ public class LocacaoServiceTest {
 
 		// acao
 		Locacao locacao = teste.alugarFilme(usuario, null);
-
 	}
 
 }
