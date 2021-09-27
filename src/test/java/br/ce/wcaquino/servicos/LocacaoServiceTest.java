@@ -5,7 +5,11 @@ import static org.hamcrest.CoreMatchers.is;
 import java.util.Date;
 
 import org.hamcrest.CoreMatchers;
+import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
@@ -20,19 +24,48 @@ import br.ce.wcaquino.utils.DataUtils;
 
 public class LocacaoServiceTest {
 
+	private LocacaoService teste;
+	
+	private static int count = 0;
+
 	@Rule
 	public ExpectedException exception = ExpectedException.none();
 
 	@Rule
 	public ErrorCollector error = new ErrorCollector();
 
+	@Before
+	public void setup() {
+		System.out.println("Before");
+		teste = new LocacaoService();
+		count++;
+		System.out.println(count);
+	}
+
+	@After
+	public void tearDown() {
+		System.out.println("After");
+	}
+
+	@BeforeClass
+	public static void setupClass() {
+		System.out.println("Before Class");
+	}
+
+	@AfterClass
+	public static void tearDownClass() {
+		System.out.println("After Class");
+	}
+
 	@Test
 	public void testeLocacao_filmeEmEstoque() throws Exception {
 
 		// cenario
-		LocacaoService teste = new LocacaoService();
+		teste = new LocacaoService();
 		Usuario usuario = new Usuario("Benedito");
 		Filme filme = new Filme("A volta dos que não foram", 1, 20.0);
+
+		System.out.println("Teste!");
 
 		// acao
 
@@ -49,7 +82,7 @@ public class LocacaoServiceTest {
 	@Test(expected = FilmeSemEstoqueException.class) // teste onde apenas essa exceção ocorre
 	public void testeLocacao_filmeSemEstoque() throws Exception {
 		// cenario
-		LocacaoService teste = new LocacaoService();
+		teste = new LocacaoService();
 		Usuario usuario = new Usuario("José");
 		Filme filme = new Filme("A volta dos que não foram", 0, 20.0);
 
@@ -61,7 +94,7 @@ public class LocacaoServiceTest {
 	@Test // teste onde consegue verificar excecao e mensagem então código segue fluxo
 	public void testLocacao_usuarioVazio() throws FilmeSemEstoqueException {
 		// cenario
-		LocacaoService teste = new LocacaoService();
+		teste = new LocacaoService();
 		Filme filme = new Filme("A volta dos que não foram", 1, 20.0);
 
 		// acao
@@ -72,20 +105,19 @@ public class LocacaoServiceTest {
 		} catch (LocadoraException e) {
 			Assert.assertThat(e.getMessage(), is("Usuario Vazio"));
 		}
-		
-		System.out.println("Operação continua após a exceção");
 
 	}
 
-	@Test // teste onde e definido qual excessao e qual mensagem deve chegar e encerra o processo
+	@Test // teste onde e definido qual excessao e qual mensagem deve chegar e encerra o
+			// processo
 	public void testLocacao_filmeVazio() throws FilmeSemEstoqueException, LocadoraException {
 		// cenario
-		LocacaoService teste = new LocacaoService();
+		teste = new LocacaoService();
 		Usuario usuario = new Usuario("José");
 
 		exception.expect(LocadoraException.class);
 		exception.expectMessage("Filme Vazio");
-		
+
 		// acao
 		Locacao locacao = teste.alugarFilme(usuario, null);
 
