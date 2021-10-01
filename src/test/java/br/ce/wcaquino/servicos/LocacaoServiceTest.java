@@ -72,8 +72,6 @@ public class LocacaoServiceTest {
 		Usuario usuario = new Usuario("Benedito");
 		List<Filme> filmes = Arrays.asList(new Filme("A volta dos que não foram", 1, 20.0));
 
-		System.out.println("Teste!");
-
 		// acao
 
 		Locacao locacao = teste.alugarFilme(usuario, filmes);
