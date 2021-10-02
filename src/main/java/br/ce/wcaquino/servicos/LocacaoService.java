@@ -16,7 +16,7 @@ import br.ce.wcaquino.utils.DataUtils;
 
 public class LocacaoService {
 
-	private LocacaoDAO dao;
+	public LocacaoDAO dao;
 
 	public Locacao alugarFilme(Usuario usuario, List<Filme> filmes) throws FilmeSemEstoqueException, LocadoraException {
 

@@ -9,20 +9,18 @@ import java.util.Date;
 import java.util.List;
 
 import org.hamcrest.CoreMatchers;
-import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
 import org.junit.rules.ExpectedException;
+import org.mockito.Mockito;
 
 import br.ce.wcaquino.builders.FilmeBuilder;
 import br.ce.wcaquino.builders.UsuarioBuilder;
 import br.ce.wcaquino.daos.LocacaoDAO;
-import br.ce.wcaquino.daos.LocacaoDAOFake;
 import br.ce.wcaquino.entidades.Filme;
 import br.ce.wcaquino.entidades.Locacao;
 import br.ce.wcaquino.entidades.Usuario;
@@ -30,6 +28,7 @@ import br.ce.wcaquino.exceptions.FilmeSemEstoqueException;
 import br.ce.wcaquino.exceptions.LocadoraException;
 import br.ce.wcaquino.matchers.MatchersProprios;
 import br.ce.wcaquino.utils.DataUtils;
+import buildermaster.BuilderMaster;
 
 public class LocacaoServiceTest {
 
@@ -44,18 +43,8 @@ public class LocacaoServiceTest {
 	@Before
 	public void setup() {
 		teste = new LocacaoService();
-		LocacaoDAO dao = new LocacaoDAOFake();
+		LocacaoDAO dao = Mockito.mock(LocacaoDAO.class);
 		teste.setLocacaoDAO(dao);
-	}
-
-	@BeforeClass
-	public static void setupClass() {
-		System.out.println("Before Class");
-	}
-
-	@AfterClass
-	public static void tearDownClass() {
-		System.out.println("After Class");
 	}
 
 	@Test
@@ -132,5 +121,9 @@ public class LocacaoServiceTest {
 		assertThat(locacao.getDataRetorno(), MatchersProprios.caiEm(Calendar.MONDAY));
 		assertThat(locacao.getDataRetorno(), MatchersProprios.caiNumaSegunda());
 
+	}
+	
+	public static void main(String[] args) {
+		new BuilderMaster().gerarCodigoClasse(Locacao.class);
 	}
 }
