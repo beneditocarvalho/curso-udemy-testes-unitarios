@@ -9,7 +9,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.hamcrest.CoreMatchers;
-import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Assume;
@@ -22,6 +21,8 @@ import org.junit.rules.ExpectedException;
 
 import br.ce.wcaquino.builders.FilmeBuilder;
 import br.ce.wcaquino.builders.UsuarioBuilder;
+import br.ce.wcaquino.daos.LocacaoDAO;
+import br.ce.wcaquino.daos.LocacaoDAOFake;
 import br.ce.wcaquino.entidades.Filme;
 import br.ce.wcaquino.entidades.Locacao;
 import br.ce.wcaquino.entidades.Usuario;
@@ -34,8 +35,6 @@ public class LocacaoServiceTest {
 
 	private LocacaoService teste;
 
-	private static int count = 0;
-
 	@Rule
 	public ExpectedException exception = ExpectedException.none();
 
@@ -44,15 +43,9 @@ public class LocacaoServiceTest {
 
 	@Before
 	public void setup() {
-		System.out.println("Before");
 		teste = new LocacaoService();
-		count++;
-		System.out.println(count);
-	}
-
-	@After
-	public void tearDown() {
-		System.out.println("After");
+		LocacaoDAO dao = new LocacaoDAOFake();
+		teste.setLocacaoDAO(dao);
 	}
 
 	@BeforeClass
